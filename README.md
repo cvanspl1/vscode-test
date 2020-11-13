@@ -1,6 +1,6 @@
-# troutext README
+# Rest{i} README
 
-This is the README for your extension "troutext". After writing up a brief description, we recommend including the following sections.
+Cool description
 
 ## Features
 

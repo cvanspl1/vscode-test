@@ -1,6 +1,6 @@
 {
-  "name": "troutext",
-  "displayName": "troutExt",
+  "name": "resti",
+  "displayName": "Rest{i}",
   "description": "",
   "version": "0.0.1",
   "engines": {
@@ -16,11 +16,7 @@
   "contributes": {
     "commands": [
       {
-        "command": "troutext.showPath",
-        "title": "Show Path"
-      },
-      {
-        "command": "troutext.quickPing",
+        "command": "resti.quickPing",
         "title": "Quick Ping"
       }
     ],
@@ -28,12 +24,7 @@
       "editor/context": [
         {
           "when": "editorTextFocus",
-          "command": "troutext.showPath",
-          "group": "navigation"
-        },
-        {
-          "when": "editorTextFocus",
-          "command": "troutext.quickPing",
+          "command": "resti.quickPing",
           "group": "navigation"
         }
       ]
@@ -65,5 +56,8 @@
     "ts-loader": "^8.0.3",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12"
+  },
+  "dependencies": {
+    "axios": "^0.21.0"
   }
 }
