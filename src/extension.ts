@@ -3,6 +3,7 @@ import { ExtensionContext, workspace, window, commands } from "vscode";
 import { existsSync, mkdir, writeFile, readFile } from "fs";
 import axios from "axios";
 import * as utils from "./utils/utils";
+import FileParser from './utils/fileParser';
 
 export async function activate(context: ExtensionContext) {
   const { rootPath } = workspace;
@@ -12,7 +13,7 @@ export async function activate(context: ExtensionContext) {
    */
   if (!existsSync(rootPath + "/.resti")) {
     mkdir(rootPath + "/.resti", (err) => {
-      if (err) return err;
+      if (err) {return err;}
       writeFile(
         rootPath + "/.resti/endpoints.json",
         JSON.stringify([]),
@@ -31,14 +32,18 @@ export async function activate(context: ExtensionContext) {
   const outputWindow = window.createOutputChannel("Rest{i}");
   outputWindow.appendLine("---Rest{i} initialized---");
 
+  // find routes
+  const parser = new FileParser();
+
+
   let quickPing = commands.registerCommand("resti.quickPing", () => {
     const activeEditor = window.activeTextEditor;
-    if (!activeEditor) return;
+    if (!activeEditor) {return;}
     
     const document = activeEditor.document;
     const selection = activeEditor.selection.active;
     const endPoint = document.lineAt(selection.line).text.match(/"(\S*)"/)![1];
-    const url = `http://localhost:3000/api${endPoint}`;
+    const url = `http://localhost:3000/${endPoint}`;
 
     /**
      * Attempt to resolve. todo: need to add timeout and send fail state if no response
@@ -78,7 +83,7 @@ export async function activate(context: ExtensionContext) {
         rootPath + "/.resti/endpoints.json",
         JSON.stringify(temp),
         (err) => {
-          if (err) return console.error("File write error:", err);
+          if (err) {return console.error("File write error:", err);}
         }
       );
     });

@@ -106,6 +106,7 @@ const vscode_1 = __webpack_require__(1);
 const fs_1 = __webpack_require__(2);
 const axios_1 = __webpack_require__(3);
 const utils = __webpack_require__(49);
+const fileParser_1 = __webpack_require__(50);
 function activate(context) {
     return __awaiter(this, void 0, void 0, function* () {
         const { rootPath } = vscode_1.workspace;
@@ -114,8 +115,9 @@ function activate(context) {
          */
         if (!fs_1.existsSync(rootPath + "/.resti")) {
             fs_1.mkdir(rootPath + "/.resti", (err) => {
-                if (err)
+                if (err) {
                     return err;
+                }
                 fs_1.writeFile(rootPath + "/.resti/endpoints.json", JSON.stringify([]), (err) => {
                     if (err) {
                         return console.error("File write error:", err);
@@ -128,14 +130,17 @@ function activate(context) {
          */
         const outputWindow = vscode_1.window.createOutputChannel("Rest{i}");
         outputWindow.appendLine("---Rest{i} initialized---");
+        // find routes
+        const parser = new fileParser_1.default();
         let quickPing = vscode_1.commands.registerCommand("resti.quickPing", () => {
             const activeEditor = vscode_1.window.activeTextEditor;
-            if (!activeEditor)
+            if (!activeEditor) {
                 return;
+            }
             const document = activeEditor.document;
             const selection = activeEditor.selection.active;
             const endPoint = document.lineAt(selection.line).text.match(/"(\S*)"/)[1];
-            const url = `http://localhost:3000/api${endPoint}`;
+            const url = `http://localhost:3000/${endPoint}`;
             /**
              * Attempt to resolve. todo: need to add timeout and send fail state if no response
              */
@@ -162,8 +167,9 @@ function activate(context) {
                 let temp = JSON.parse(data.toString());
                 temp.push(info);
                 fs_1.writeFile(rootPath + "/.resti/endpoints.json", JSON.stringify(temp), (err) => {
-                    if (err)
+                    if (err) {
                         return console.error("File write error:", err);
+                    }
                 });
             });
         });
@@ -3678,7 +3684,7 @@ module.exports = require("zlib");
 /* 44 */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"_from\":\"axios\",\"_id\":\"axios@0.21.0\",\"_inBundle\":false,\"_integrity\":\"sha512-fmkJBknJKoZwem3/IKSSLpkdNXZeBu5Q7GA/aRsr2btgrptmSCxi2oFjZHqGdK9DoTil9PIHlPIZw2EcRJXRvw==\",\"_location\":\"/axios\",\"_phantomChildren\":{},\"_requested\":{\"type\":\"tag\",\"registry\":true,\"raw\":\"axios\",\"name\":\"axios\",\"escapedName\":\"axios\",\"rawSpec\":\"\",\"saveSpec\":null,\"fetchSpec\":\"latest\"},\"_requiredBy\":[\"#USER\",\"/\"],\"_resolved\":\"https://registry.npmjs.org/axios/-/axios-0.21.0.tgz\",\"_shasum\":\"26df088803a2350dff2c27f96fef99fe49442aca\",\"_spec\":\"axios\",\"_where\":\"C:\\\\Users\\\\itsme\\\\Documents\\\\vsExt\\\\troutext\",\"author\":{\"name\":\"Matt Zabriskie\"},\"browser\":{\"./lib/adapters/http.js\":\"./lib/adapters/xhr.js\"},\"bugs\":{\"url\":\"https://github.com/axios/axios/issues\"},\"bundleDependencies\":false,\"bundlesize\":[{\"path\":\"./dist/axios.min.js\",\"threshold\":\"5kB\"}],\"dependencies\":{\"follow-redirects\":\"^1.10.0\"},\"deprecated\":false,\"description\":\"Promise based HTTP client for the browser and node.js\",\"devDependencies\":{\"bundlesize\":\"^0.17.0\",\"coveralls\":\"^3.0.0\",\"es6-promise\":\"^4.2.4\",\"grunt\":\"^1.0.2\",\"grunt-banner\":\"^0.6.0\",\"grunt-cli\":\"^1.2.0\",\"grunt-contrib-clean\":\"^1.1.0\",\"grunt-contrib-watch\":\"^1.0.0\",\"grunt-eslint\":\"^20.1.0\",\"grunt-karma\":\"^2.0.0\",\"grunt-mocha-test\":\"^0.13.3\",\"grunt-ts\":\"^6.0.0-beta.19\",\"grunt-webpack\":\"^1.0.18\",\"istanbul-instrumenter-loader\":\"^1.0.0\",\"jasmine-core\":\"^2.4.1\",\"karma\":\"^1.3.0\",\"karma-chrome-launcher\":\"^2.2.0\",\"karma-coverage\":\"^1.1.1\",\"karma-firefox-launcher\":\"^1.1.0\",\"karma-jasmine\":\"^1.1.1\",\"karma-jasmine-ajax\":\"^0.1.13\",\"karma-opera-launcher\":\"^1.0.0\",\"karma-safari-launcher\":\"^1.0.0\",\"karma-sauce-launcher\":\"^1.2.0\",\"karma-sinon\":\"^1.0.5\",\"karma-sourcemap-loader\":\"^0.3.7\",\"karma-webpack\":\"^1.7.0\",\"load-grunt-tasks\":\"^3.5.2\",\"minimist\":\"^1.2.0\",\"mocha\":\"^5.2.0\",\"sinon\":\"^4.5.0\",\"typescript\":\"^2.8.1\",\"url-search-params\":\"^0.10.0\",\"webpack\":\"^1.13.1\",\"webpack-dev-server\":\"^1.14.1\"},\"homepage\":\"https://github.com/axios/axios\",\"jsdelivr\":\"dist/axios.min.js\",\"keywords\":[\"xhr\",\"http\",\"ajax\",\"promise\",\"node\"],\"license\":\"MIT\",\"main\":\"index.js\",\"name\":\"axios\",\"repository\":{\"type\":\"git\",\"url\":\"git+https://github.com/axios/axios.git\"},\"scripts\":{\"build\":\"NODE_ENV=production grunt build\",\"coveralls\":\"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js\",\"examples\":\"node ./examples/server.js\",\"fix\":\"eslint --fix lib/**/*.js\",\"postversion\":\"git push && git push --tags\",\"preversion\":\"npm test\",\"start\":\"node ./sandbox/server.js\",\"test\":\"grunt test && bundlesize\",\"version\":\"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json\"},\"typings\":\"./index.d.ts\",\"unpkg\":\"dist/axios.min.js\",\"version\":\"0.21.0\"}");
+module.exports = JSON.parse("{\"_args\":[[\"axios@0.21.0\",\"/home/cvanspl1/github/vscode-test\"]],\"_from\":\"axios@0.21.0\",\"_id\":\"axios@0.21.0\",\"_inBundle\":false,\"_integrity\":\"sha512-fmkJBknJKoZwem3/IKSSLpkdNXZeBu5Q7GA/aRsr2btgrptmSCxi2oFjZHqGdK9DoTil9PIHlPIZw2EcRJXRvw==\",\"_location\":\"/axios\",\"_phantomChildren\":{},\"_requested\":{\"type\":\"version\",\"registry\":true,\"raw\":\"axios@0.21.0\",\"name\":\"axios\",\"escapedName\":\"axios\",\"rawSpec\":\"0.21.0\",\"saveSpec\":null,\"fetchSpec\":\"0.21.0\"},\"_requiredBy\":[\"/\"],\"_resolved\":\"https://registry.npmjs.org/axios/-/axios-0.21.0.tgz\",\"_spec\":\"0.21.0\",\"_where\":\"/home/cvanspl1/github/vscode-test\",\"author\":{\"name\":\"Matt Zabriskie\"},\"browser\":{\"./lib/adapters/http.js\":\"./lib/adapters/xhr.js\"},\"bugs\":{\"url\":\"https://github.com/axios/axios/issues\"},\"bundlesize\":[{\"path\":\"./dist/axios.min.js\",\"threshold\":\"5kB\"}],\"dependencies\":{\"follow-redirects\":\"^1.10.0\"},\"description\":\"Promise based HTTP client for the browser and node.js\",\"devDependencies\":{\"bundlesize\":\"^0.17.0\",\"coveralls\":\"^3.0.0\",\"es6-promise\":\"^4.2.4\",\"grunt\":\"^1.0.2\",\"grunt-banner\":\"^0.6.0\",\"grunt-cli\":\"^1.2.0\",\"grunt-contrib-clean\":\"^1.1.0\",\"grunt-contrib-watch\":\"^1.0.0\",\"grunt-eslint\":\"^20.1.0\",\"grunt-karma\":\"^2.0.0\",\"grunt-mocha-test\":\"^0.13.3\",\"grunt-ts\":\"^6.0.0-beta.19\",\"grunt-webpack\":\"^1.0.18\",\"istanbul-instrumenter-loader\":\"^1.0.0\",\"jasmine-core\":\"^2.4.1\",\"karma\":\"^1.3.0\",\"karma-chrome-launcher\":\"^2.2.0\",\"karma-coverage\":\"^1.1.1\",\"karma-firefox-launcher\":\"^1.1.0\",\"karma-jasmine\":\"^1.1.1\",\"karma-jasmine-ajax\":\"^0.1.13\",\"karma-opera-launcher\":\"^1.0.0\",\"karma-safari-launcher\":\"^1.0.0\",\"karma-sauce-launcher\":\"^1.2.0\",\"karma-sinon\":\"^1.0.5\",\"karma-sourcemap-loader\":\"^0.3.7\",\"karma-webpack\":\"^1.7.0\",\"load-grunt-tasks\":\"^3.5.2\",\"minimist\":\"^1.2.0\",\"mocha\":\"^5.2.0\",\"sinon\":\"^4.5.0\",\"typescript\":\"^2.8.1\",\"url-search-params\":\"^0.10.0\",\"webpack\":\"^1.13.1\",\"webpack-dev-server\":\"^1.14.1\"},\"homepage\":\"https://github.com/axios/axios\",\"jsdelivr\":\"dist/axios.min.js\",\"keywords\":[\"xhr\",\"http\",\"ajax\",\"promise\",\"node\"],\"license\":\"MIT\",\"main\":\"index.js\",\"name\":\"axios\",\"repository\":{\"type\":\"git\",\"url\":\"git+https://github.com/axios/axios.git\"},\"scripts\":{\"build\":\"NODE_ENV=production grunt build\",\"coveralls\":\"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js\",\"examples\":\"node ./examples/server.js\",\"fix\":\"eslint --fix lib/**/*.js\",\"postversion\":\"git push && git push --tags\",\"preversion\":\"npm test\",\"start\":\"node ./sandbox/server.js\",\"test\":\"grunt test && bundlesize\",\"version\":\"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json\"},\"typings\":\"./index.d.ts\",\"unpkg\":\"dist/axios.min.js\",\"version\":\"0.21.0\"}");
 
 /***/ }),
 /* 45 */
@@ -3920,6 +3926,153 @@ function addDeco(contentText, line, column, activeEditor) {
 exports.addDeco = addDeco;
 ;
 
+
+/***/ }),
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const util = __webpack_require__(39);
+const path = __webpack_require__(51);
+const fs = __webpack_require__(2);
+const vscode_1 = __webpack_require__(1);
+;
+class FileParser {
+    constructor() {
+        this.codeFiles = this.findCodeFiles(vscode_1.workspace.rootPath);
+        this.serverFile = this.findServerFile();
+        this.serverImport = this.findServerImport();
+        this.serverName = this.findServerName();
+        this.routers = this.findRouters();
+        for (let i = 0; i < this.routers.length; i++) {
+            this.routers[i].path = this.findRouterPath(this.routers[i]);
+            this.routers[i].contents = this.parseRouterFile(this.routers[i]);
+        }
+        console.log("SERVER FILE: ", this.serverFile);
+        console.log("EXPRESS IMPORT NAME: ", this.serverImport);
+        console.log("EXPRESS SERVER NAME: ", this.serverName);
+        console.log("ROUTERS: ", this.routers);
+    }
+    // Find all javascript/typescript files in the workspace
+    findCodeFiles(dir) {
+        // Handle case where no workspace is open
+        if (dir === undefined) {
+            return [];
+        }
+        let codeFiles = [];
+        // Read all files/folders in the specified directory
+        const dirContents = fs.readdirSync(dir);
+        // Loop through each item in the current directory
+        let files = dirContents.map((content) => {
+            // Ignore the node_modules folder
+            if (content === 'node_modules') {
+                return '';
+            }
+            let resource = path.resolve(dir, content);
+            // If a folder, find the files within, otherwise store the file name
+            return fs.statSync(resource).isDirectory() ? this.findCodeFiles(resource) : resource;
+        });
+        // Flatten the array of files
+        files = files.flat(Infinity);
+        // Reduce the list down to only javascript/typescript files
+        files.forEach((file) => {
+            if (file.match(/.*\.(js|ts)$/)) {
+                codeFiles.push(file);
+            }
+        });
+        return codeFiles;
+    }
+    // Find the file in the user's workspace that contains their express server
+    findServerFile() {
+        for (let i = 0; i < this.codeFiles.length; i++) {
+            const file = this.codeFiles[i];
+            // Read the contents of each code file
+            const data = fs.readFileSync(file, { encoding: 'utf8', flag: 'r' });
+            // Search the code file for an express import statement
+            const serverImport = data.match(/[\s\S]*?(\S+)\s*=\s*require\s*\(\s*['"`]express['"`]\s*\)[\s\S]*?/);
+            if (serverImport !== null) {
+                const serverInit = data.match(new RegExp('(\\S+)\\s*=\\s*' + serverImport[1] + '\\(\\)'));
+                // Return the server file if found
+                if (serverInit !== null) {
+                    return { contents: data, path: file };
+                }
+            }
+        }
+        // Return an empty object if there is no server file
+        return { contents: '', path: '' };
+    }
+    findServerImport() {
+        const lines = this.serverFile.contents.split('\n');
+        for (let i = 0; i < lines.length; i++) {
+            const server = lines[i].match(/(\S+)\s*=\s*require\s*\(\s*['"`]express['"`]\s*\)/);
+            if (server !== null) {
+                return server[1];
+            }
+        }
+        return '';
+    }
+    findServerName() {
+        const serverPattern = new RegExp('(\\S+)\\s*=\\s*' + this.serverImport + '\\(\\)');
+        const lines = this.serverFile.contents.split('\n');
+        for (let i = 0; i < lines.length; i++) {
+            const server = lines[i].match(serverPattern);
+            if (server !== null) {
+                return server[1];
+            }
+        }
+        return '';
+    }
+    findRouters() {
+        const routers = [];
+        const routerPattern = new RegExp(this.serverName + '\\.use\\([\'"`](\\S+)[\'"`],\\s*(\\S+)\\)');
+        const lines = this.serverFile.contents.split('\n');
+        for (let i = 0; i < lines.length; i++) {
+            const router = lines[i].match(routerPattern);
+            if (router !== null) {
+                routers.push({ name: router[2], path: '', contents: '', baseRoute: router[1] });
+            }
+        }
+        return routers;
+    }
+    findRouterPath(router) {
+        const pathPattern = new RegExp(router.name + '\\s*=\\s*require\\((.+)\\)');
+        const lines = this.serverFile.contents.split('\n');
+        for (let i = 0; i < lines.length; i++) {
+            const path = lines[i].match(pathPattern);
+            if (path !== null) {
+                const relativePath = lines[i].match(/path\.join\(__dirname,\s*['"`](.*)['"`]\)/);
+                if (relativePath !== null) {
+                    const serverDirectory = this.serverFile.path.match(/(.*\/)/);
+                    if (serverDirectory !== null) {
+                        return serverDirectory[1].concat(relativePath[1]);
+                    }
+                }
+                else {
+                    return path[1];
+                }
+            }
+        }
+        return '';
+    }
+    parseRouterFile(router) {
+        console.log(router.path);
+        if (fs.existsSync(router.path)) {
+            return fs.readFileSync(router.path, { encoding: 'utf8', flag: 'r' });
+        }
+        return '';
+    }
+}
+;
+exports.default = FileParser;
+
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports) {
+
+module.exports = require("path");
 
 /***/ })
 /******/ ]);
